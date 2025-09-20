@@ -1,0 +1,174 @@
+{
+  "agents": [
+    {
+      "id": "test-case-generator",
+      "name": "Test Case Generator",
+      "description": "AI agent specialized in generating healthcare software test cases from requirements",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.3,
+      "maxSteps": 5,
+      "systemPrompt": "You are an expert healthcare software test case generation AI. You specialize in:\n- Converting natural language requirements into structured test cases\n- Understanding healthcare regulations (FDA, IEC 62304, ISO 9001, ISO 13485, ISO 27001)\n- Ensuring compliance and traceability in test case generation\n- Supporting multiple input formats (PDF, Word, XML, Markup)\n- Generating test datasets and validation criteria\n- Creating comprehensive test coverage for healthcare software\n\nAlways ensure test cases are compliant with healthcare standards and include proper traceability to requirements.",
+      "authenticatedSystemPrompt": "You are an expert healthcare software test case generation AI with access to document analysis tools. You can:\n- Analyze uploaded healthcare requirements documents (PDF, TXT, XML)\n- Generate compliant test cases following FDA, IEC 62304, ISO standards\n- Create traceability matrices linking requirements to test cases\n- Generate test datasets for healthcare scenarios\n- Ensure GDPR compliance in test data generation\n- Integrate with ALM platforms (Jira, Polarion, Azure DevOps)\n\nWhen users upload requirements documents, extract the text content and generate comprehensive, compliant test cases with full traceability.",
+      "tools": ["analyzeRequirements", "generateTestCases", "createTraceabilityMatrix"],
+      "requiresAuth": true,
+      "endpoint": "/api/chat"
+    },
+    {
+      "id": "compliance-analyzer",
+      "name": "Compliance Analyzer",
+      "description": "AI agent specialized in healthcare compliance and regulatory analysis",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.2,
+      "maxSteps": 3,
+      "systemPrompt": "You are a healthcare compliance expert AI. You specialize in:\n- FDA regulations for medical device software\n- IEC 62304 medical device software lifecycle processes\n- ISO 9001, ISO 13485, ISO 27001 compliance requirements\n- GDPR compliance for healthcare data\n- Risk assessment and mitigation strategies\n- Regulatory documentation and audit trails\n\nAnalyze requirements and ensure all generated test cases meet regulatory standards.",
+      "tools": ["complianceCheck", "riskAssessment"],
+      "requiresAuth": true,
+      "endpoint": "/api/compliance"
+    },
+    {
+      "id": "requirements-analyzer",
+      "name": "Requirements Analyzer",
+      "description": "AI agent for analyzing and interpreting healthcare software requirements",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.4,
+      "maxSteps": 4,
+      "systemPrompt": "You are a healthcare requirements analysis expert. You excel at:\n- Parsing complex healthcare software specifications\n- Identifying functional and non-functional requirements\n- Understanding domain-specific healthcare terminology\n- Extracting testable requirements from documentation\n- Identifying gaps and ambiguities in requirements\n- Creating structured requirement hierarchies\n\nAnalyze uploaded documents thoroughly and extract all testable requirements with proper categorization.",
+      "tools": ["parseRequirements", "identifyGaps", "structureRequirements"],
+      "requiresAuth": true,
+      "endpoint": "/api/analyze-requirements"
+    },
+    {
+      "id": "integration-assistant",
+      "name": "Integration Assistant",
+      "description": "AI agent for ALM platform integration and toolchain connectivity",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.3,
+      "maxSteps": 3,
+      "systemPrompt": "You are an ALM integration specialist. You help with:\n- Jira integration for test case management\n- Polarion connectivity for requirements traceability\n- Azure DevOps integration for CI/CD pipelines\n- Test case export in various formats (JSON, XML, CSV)\n- API integration patterns for enterprise toolchains\n- Automated workflow setup and configuration\n\nProvide guidance on integrating generated test cases with existing enterprise tools.",
+      "tools": ["exportTestCases", "configureIntegration", "validateConnectivity"],
+      "requiresAuth": true,
+      "endpoint": "/api/integration"
+    },
+    {
+      "id": "chat-assistant",
+      "name": "General Assistant",
+      "description": "General purpose AI assistant for healthcare test case generation support",
+      "model": "gemini-2.5-flash",
+      "temperature": 0.7,
+      "maxSteps": 3,
+      "systemPrompt": "You are a helpful AI assistant supporting healthcare test case generation. You can help with:\n- General questions about healthcare software testing\n- Explaining regulatory requirements and standards\n- Providing guidance on test case best practices\n- Supporting document analysis and interpretation\n- Offering suggestions for test coverage improvement\n\nBe helpful, accurate, and focus on healthcare software testing context.",
+      "authenticatedSystemPrompt": "You are a helpful AI assistant with access to healthcare document analysis tools. You can:\n- Answer questions about healthcare software testing\n- Analyze uploaded requirements documents\n- Provide guidance on compliance and regulatory matters\n- Support test case generation workflows\n- Explain healthcare standards and best practices\n\nWhen users upload files, analyze the content in the context of healthcare software testing and compliance.",
+      "tools": ["analyzeFile", "generateInsights"],
+      "requiresAuth": false,
+      "endpoint": "/api/chat"
+    }
+  ],
+  "defaultAgent": "test-case-generator",
+  "tools": {
+    "analyzeRequirements": {
+      "description": "Analyze healthcare requirements documents and extract testable requirements",
+      "inputSchema": {
+        "document": "string",
+        "analysisType": "enum:functional,non-functional,compliance,all",
+        "standards": "array"
+      }
+    },
+    "generateTestCases": {
+      "description": "Generate compliant test cases from healthcare requirements",
+      "inputSchema": {
+        "requirements": "array",
+        "testType": "enum:unit,integration,system,acceptance",
+        "complianceStandards": "array",
+        "format": "enum:json,xml,csv,jira"
+      }
+    },
+    "createTraceabilityMatrix": {
+      "description": "Create traceability matrix linking requirements to test cases",
+      "inputSchema": {
+        "requirements": "array",
+        "testCases": "array",
+        "format": "enum:matrix,graph,table"
+      }
+    },
+    "complianceCheck": {
+      "description": "Check test cases for regulatory compliance",
+      "inputSchema": {
+        "testCases": "array",
+        "standards": "enum:FDA,IEC62304,ISO9001,ISO13485,ISO27001,GDPR",
+        "severity": "enum:critical,major,minor"
+      }
+    },
+    "riskAssessment": {
+      "description": "Perform risk assessment on healthcare software requirements",
+      "inputSchema": {
+        "requirements": "array",
+        "riskCategories": "array",
+        "assessmentType": "enum:clinical,technical,regulatory"
+      }
+    },
+    "parseRequirements": {
+      "description": "Parse and structure requirements from documents",
+      "inputSchema": {
+        "document": "string",
+        "format": "enum:pdf,word,xml,markup",
+        "extractionType": "enum:structured,unstructured,hybrid"
+      }
+    },
+    "identifyGaps": {
+      "description": "Identify gaps and ambiguities in requirements",
+      "inputSchema": {
+        "requirements": "array",
+        "context": "string",
+        "standards": "array"
+      }
+    },
+    "structureRequirements": {
+      "description": "Create structured hierarchy of requirements",
+      "inputSchema": {
+        "requirements": "array",
+        "hierarchyType": "enum:functional,priority,compliance",
+        "format": "enum:tree,matrix,list"
+      }
+    },
+    "exportTestCases": {
+      "description": "Export test cases in various formats for ALM integration",
+      "inputSchema": {
+        "testCases": "array",
+        "format": "enum:jira,polarion,azure-devops,json,xml,csv",
+        "includeTraceability": "boolean"
+      }
+    },
+    "configureIntegration": {
+      "description": "Configure integration with ALM platforms",
+      "inputSchema": {
+        "platform": "enum:jira,polarion,azure-devops",
+        "credentials": "object",
+        "mappingRules": "object"
+      }
+    },
+    "validateConnectivity": {
+      "description": "Validate connectivity to ALM platforms",
+      "inputSchema": {
+        "platform": "string",
+        "endpoint": "string",
+        "credentials": "object"
+      }
+    },
+    "analyzeFile": {
+      "description": "Analyze uploaded healthcare documents",
+      "inputSchema": {
+        "fileName": "string",
+        "content": "string",
+        "analysisType": "enum:requirements,compliance,test-cases"
+      }
+    },
+    "generateInsights": {
+      "description": "Generate insights from healthcare requirements and test cases",
+      "inputSchema": {
+        "topic": "string",
+        "context": "string",
+        "focusArea": "enum:compliance,coverage,risk,traceability"
+      }
+    }
+  }
+}
