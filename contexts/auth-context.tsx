@@ -33,15 +33,18 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (!isFirebaseConfigured || !auth) {
+    if (!isFirebaseConfigured) {
       setLoading(false)
       return
     }
 
     const setupAuthListener = async () => {
       try {
+        const { getAuth } = await import("@/lib/firebase")
+        const authInstance = await getAuth()
+
         const { onAuthStateChanged } = await import("firebase/auth")
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
+        const unsubscribe = onAuthStateChanged(authInstance, (user) => {
           setUser(user)
           setLoading(false)
         })
@@ -94,7 +97,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
     const { updateProfile: firebaseUpdateProfile } = await import("firebase/auth")
     await firebaseUpdateProfile(auth.currentUser, { displayName })
-    // Trigger a re-render by updating the user state
     setUser({ ...auth.currentUser })
   }
 
