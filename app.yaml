@@ -1,0 +1,26 @@
+# Google App Engine configuration for Next.js deployment
+runtime: nodejs20
+
+# Environment variables are now loaded from .env files during build
+# For production deployment, use .env.prod or set via Google Cloud Console
+
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+  target_cpu_utilization: 0.6
+  target_throughput_utilization: 0.6
+
+resources:
+  cpu: 1
+  memory_gb: 2
+  disk_size_gb: 10
+
+handlers:
+  - url: /_next/static
+    static_dir: .next/static
+    expiration: 1y
+    
+  - url: /.*
+    script: auto
+    secure: always
+    redirect_http_response_code: 301

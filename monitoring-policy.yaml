@@ -1,0 +1,29 @@
+# Google Cloud Monitoring policy configuration
+displayName: "ChatAI Application Monitoring"
+conditions:
+  - displayName: "High Error Rate"
+    conditionThreshold:
+      filter: 'resource.type="cloud_run_revision" AND resource.labels.service_name="chatai-app"'
+      comparison: COMPARISON_GREATER_THAN
+      thresholdValue: 0.05
+      duration: 300s
+      aggregations:
+        - alignmentPeriod: 60s
+          perSeriesAligner: ALIGN_RATE
+          crossSeriesReducer: REDUCE_MEAN
+          groupByFields:
+            - resource.labels.service_name
+  - displayName: "High Response Time"
+    conditionThreshold:
+      filter: 'resource.type="cloud_run_revision" AND resource.labels.service_name="chatai-app"'
+      comparison: COMPARISON_GREATER_THAN
+      thresholdValue: 2000
+      duration: 300s
+      aggregations:
+        - alignmentPeriod: 60s
+          perSeriesAligner: ALIGN_PERCENTILE_95
+          crossSeriesReducer: REDUCE_MEAN
+notificationChannels:
+  - projects/your-project-id/notificationChannels/your-notification-channel-id
+alertStrategy:
+  autoClose: 86400s
