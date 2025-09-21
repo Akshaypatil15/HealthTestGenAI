@@ -34,9 +34,13 @@ console.log("[v0] Firebase configuration:", {
 
 export { isFirebaseConfigured }
 
-let firebaseApp: any = null
-let firebaseAuth: any = null
-let firebaseDb: any = null
+import type { FirebaseApp } from "firebase/app"
+import type { Auth } from "firebase/auth"
+import type { Firestore } from "firebase/firestore"
+
+let firebaseApp: FirebaseApp | null = null
+let firebaseAuth: Auth | null = null
+let firebaseDb: Firestore | null = null
 
 export let auth: any = null
 export let db: any = null

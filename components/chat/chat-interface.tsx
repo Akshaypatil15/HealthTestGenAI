@@ -26,7 +26,7 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
   const { user } = useAuth()
   const [inputValue, setInputValue] = useState("")
   const [isProcessingFile, setIsProcessingFile] = useState(false)
-  const [selectedAgentId, setSelectedAgentId] = useState("chat-assistant")
+  const [selectedAgentId, setSelectedAgentId] = useState(agentManager.getDefaultAgent().id)
   const [isLoadingHistory, setIsLoadingHistory] = useState(false)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)

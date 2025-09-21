@@ -92,13 +92,10 @@ export class AgentManager {
       if (!apiKey) {
         throw new Error("GOOGLE_GENERATIVE_AI_API_KEY environment variable is required")
       }
-
-      const model = google(googleModelName, {
+      // console.log("[v0] Created Google model:", model)
+      return google(googleModelName, {
         apiKey: apiKey,
       })
-
-      console.log("[v0] Created Google model:", model)
-      return model
     } else if (modelName.startsWith("gpt")) {
       return openai(modelName)
     }

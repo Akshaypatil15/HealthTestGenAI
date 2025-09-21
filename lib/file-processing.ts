@@ -29,7 +29,11 @@ export async function extractTextFromFile(file: File): Promise<string> {
 }
 
 export async function analyzeFileWithAI(fileName: string, content: string, userId: string) {
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<Error | null>(null)
+
   try {
+    setIsLoading(true)
     const response = await fetch("/api/analyze-file", {
       method: "POST",
       headers: {
@@ -50,7 +54,10 @@ export async function analyzeFileWithAI(fileName: string, content: string, userI
     return result.analysis
   } catch (error) {
     console.error("File analysis error:", error)
+    setError(error as Error)
     throw error
+  } finally {
+    setIsLoading(false)
   }
 }
 
