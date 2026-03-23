@@ -99,7 +99,7 @@ export function ChatInterface({ initialMessage }: ChatInterfaceProps) {
   const safeSendMessage = async (content: string, fileExtractedText?: string) => {
     try {
       console.log("[v0] Sending message:", content)
-      await sendMessage({ text: content })
+      await sendMessage({ parts: [{ type: "text", text: content }] })
 
       if (user) {
         const saved = await firestoreService.saveChatMessage("user", content, selectedAgentId, fileExtractedText)
